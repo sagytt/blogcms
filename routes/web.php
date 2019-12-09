@@ -14,3 +14,21 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Auth::routes();
+
+
+
+Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function (){
+
+    Route::get('/home', 'HomeController@index')->name('home');
+
+    Route::get('/post/create', 'PostsController@create')->name('post.create');
+
+    Route::post('/post/store', 'PostsController@store')->name('post.store');
+
+    Route::post('/category/create', 'CategoriesController@create')->name('category.create');
+});
+
+
+
