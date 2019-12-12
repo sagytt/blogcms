@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Session;
+use App\Category;
 use Illuminate\Http\Request;
 
 class CategoriesController extends Controller
@@ -14,6 +15,7 @@ class CategoriesController extends Controller
     public function index()
     {
         //
+        return view('admin.categories.index')->with('categories', Category::all());
     }
 
     /**
@@ -24,6 +26,8 @@ class CategoriesController extends Controller
     public function create()
     {
         //
+
+        return view('admin.categories.create');
     }
 
     /**
@@ -35,6 +39,18 @@ class CategoriesController extends Controller
     public function store(Request $request)
     {
         //
+        $this->validate($request, [
+            'name' => 'required'
+        ]);
+
+        $category = new Category();
+
+        $category->name = $request->name;
+        $category->save();
+
+        session()->flash('success', "You successfully Created new Category");
+        //Session::flash('success', 'You successfully Created the Category');
+        return redirect()->route('categories');
     }
 
     /**
@@ -56,7 +72,10 @@ class CategoriesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $category = Category::find($id);
+
+        return view('admin.categories.edit')->with('category', $category);
+
     }
 
     /**
@@ -69,6 +88,15 @@ class CategoriesController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $category = Category::find($id);
+
+        $category->name = $request->name;
+
+        $category->save();
+
+        //Session::flash('success', 'You successfully updated the Category');
+        session()->flash('success', "You successfully updated the Category");
+        return redirect()->route('categories');
     }
 
     /**
@@ -80,5 +108,13 @@ class CategoriesController extends Controller
     public function destroy($id)
     {
         //
+
+        $category = Category::find($id);
+
+        $category->delete();
+
+        session()->flash('success', "You successfully deleted the Category");
+
+        return  redirect()->route('categories');
     }
 }

@@ -11,17 +11,41 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{asset('js/toastr.min.js')}}"></script>
+    <script>
 
+        @if(Session::has('success'))
+        toastr.success("{{Session::get('success')}}"
+        @endif
+
+        @if(Session::has('info'))
+        toastr.info("{{Session::get('info')}}");
+        @endif
+
+    </script>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
+    <link rel="stylesheet" href="{{asset('css/toastr.min.css')}}">
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+
+            @if(Session::has('success'))
+                <div class="alert alert-success" role="alert">
+                    {{Session::get('success')}}
+                </div>
+            @endif
+
+            @if(Session::has('info'))
+                <div class="alert alert-success" role="alert">
+                    {{Session::get('info')}}
+                </div>
+            @endif
+
+            <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
@@ -73,19 +97,30 @@
         </nav>
         <div class="container">
             <div class="row">
-
                 @if(Auth::check()){{--        check if user if logged in or not        --}}
                 <div class="col-lg-4">
                     <ul class="list-group">
                         <li class="list-group-item">
                             <a href="{{route('home')}}">Home</a>
                         </li>
+
+                        <li class="list-group-item">
+                            <a href="{{route('categories')}}">Categories</a>
+                        </li>
+
                         <li class="list-group-item">
                             <a href="{{route('category.create')}}">Create new category</a>
                         </li>
-                        <li class="list-group-item" >
 
+                        <li class="list-group-item" >
                             <a href="{{route('post.create')}}">Create new post</a>
+
+                        </li> <li class="list-group-item" >
+                            <a href="{{route('posts')}}">All Posts</a>
+                        </li>
+
+                        <li class="list-group-item" >
+                            <a href="{{route('posts.trashed')}}">All Trashed Posts</a>
                         </li>
                     </ul>
                 </div>
@@ -99,5 +134,6 @@
 
         </main>
     </div>
+
 </body>
 </html>
