@@ -11,6 +11,7 @@
 |
 */
 
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -23,6 +24,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function (){
 
     Route::get('/home', 'HomeController@index')->name('home');
 
+    //POSTS
     Route::get('/post/create', 'PostsController@create')->name('post.create');
 
     Route::post('/post/store', 'PostsController@store')->name('post.store');
@@ -35,6 +37,13 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function (){
 
     Route::get('/posts/kill/{id}', 'PostsController@kill')->name('posts.kill');
 
+    Route::get('/posts/restore/{id}', 'PostsController@restore')->name('posts.restore');
+
+    Route::get('/posts/edit/{id}', 'PostsController@edit')->name('posts.edit');
+
+    Route::post('/posts/update/{id}', 'PostsController@update')->name('posts.update');
+
+    //CATEGORIES
     Route::get('/category/create', 'CategoriesController@create')->name('category.create');
 
     Route::get('/categories', 'CategoriesController@index')->name('categories');
@@ -46,6 +55,21 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function (){
     Route::get('/category/delete/{id}', 'CategoriesController@destroy')->name('category.delete');
 
     Route::post('/category/update/{id}', 'CategoriesController@update')->name('category.update');
+
+    // TAGS
+    Route::get('/tag', 'TagsController@index')->name('tags');
+
+    Route::get('/tag/edit/{id}', 'TagsController@edit')->name('tag.edit');
+
+    Route::post('/tag/update/{id}', 'TagsController@update')->name('tag.update');
+
+    Route::get('/tag/delete/{id}', 'TagsController@destroy')->name('tag.delete');
+
+    Route::get('/tag/create', 'TagsController@create')->name('tag.create');
+
+    Route::post('/tag/store', 'TagsController@store')->name('tag.store');
+
+
 });
 
 

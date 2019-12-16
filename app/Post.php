@@ -12,7 +12,7 @@ class Post extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'title', 'content', 'category_id', 'featured', 'slug',
+        'title', 'contents', 'category_id', 'featured', 'slug',
     ];
 
 
@@ -28,5 +28,10 @@ class Post extends Model
     public function category()
     {
         return $this->belongsTo('App\Category');
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany('App\Tag');
     }
 }

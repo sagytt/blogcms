@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Post;
 use App\Category;
+use App\Tag;
 use Illuminate\Http\Request;
 use MongoDB\Driver\Session;
 class PostsController extends Controller
@@ -35,7 +36,7 @@ class PostsController extends Controller
             return redirect()->back();
         }
 
-        return view('admin.posts.create')->with('categories', $categories);
+        return view('admin.posts.create')->with('categories', $categories)->with('tags', Tag::all());
     }
 
     /**
@@ -65,17 +66,19 @@ class PostsController extends Controller
 
         $post = Post::create([
             'title' => $request->title,
-            'content' => $request->content,
+            'content' => $request->content ,
             'featured' => 'uploads/posts/' . $featured_new_name,
             'category_id' => $request->category_id,
             'slug' => str_slug($request->title),
+            'tags' => 'required',
         ]);
 
         //Session::flash('success', 'post created successfully');
 
+        $post->tags()->attach($request->tags);
         session()->flash('success', 'post created successfully');
 
-        return redirect()->back();
+        return redirect()->route('posts');
     }
 
     /**
@@ -98,6 +101,13 @@ class PostsController extends Controller
     public function edit($id)
     {
         //
+        $post = Post::find($id);
+
+        return  view('admin.posts.edit')
+            ->with('post', $post)
+            ->with('categories', Category::all())
+            ->with('tags', Tag::all());
+
     }
 
     /**
@@ -109,7 +119,41 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+
+        $this->validate($request, [
+           'title' => 'required',
+           'content' => 'required',
+           'category_id' => 'required',
+        ]);
+
+        $post = Post::find($id);
+
+        //check if user uploaded an image again
+        if($request->hasFile('featured'))
+        {
+            $featured = $request->featured;
+
+            $featured_new_name = time() . $featured->getClientOriginalName(); // time() is for giving the name of the file uniqe name with time
+
+            $featured->move('uploads/posts', $featured_new_name);
+
+            $post->featured = 'uploads/posts/' . $featured_new_name;
+        }
+
+        $post->title = $request->title;
+
+        $post->content = $request->content;
+
+        $post->category_id = $request->category_id;
+
+        $post->save();
+
+        $post->tags()->sync($request->tags); //refreshing tags in DB
+
+        session()->flash('success', 'post updated successfully');
+
+        return redirect()->route('posts');
     }
 
     /**
@@ -144,6 +188,17 @@ class PostsController extends Controller
         $post->forceDelete();
 
         session()->flash('success', 'Post Deleted Permanently.');
+
+        return redirect()->back();
+    }
+
+    public function restore($id)
+    {
+        $post = Post::withTrashed()->where('id', $id)->first();
+
+        $post->restore();
+
+        session()->flash('success', 'Post restored successfully.');
 
         return redirect()->back();
     }
