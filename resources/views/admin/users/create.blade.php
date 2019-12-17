@@ -4,22 +4,27 @@
     @include('admin.includes.errors')
     <div class="panel panel-default">
         <div class="panel-heading">
-            Create a new Tag
+            Create a new User
         </div>
 
         <div class="panel-body">
-            <form action="{{route('tag.store')}}" method="post">
+            <form action="{{route('user.store')}}" method="post">
                 @csrf
 
                 <div class="form-group">
-                    <label for="name">Tag</label>
-                    <input type="text" name="tag" class="form-control">
+                    <label for="name">User</label>
+                    <input type="text" name="name" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Email</label>
+                    <input type="email" name="email" class="form-control">
                 </div>
 
                 <div class="form-group">
                     <div class="text-center">
                         <button class="btn btn-success" type="submit">
-                            Store Tag
+                            Add User
                         </button>
                     </div>
                 </div>

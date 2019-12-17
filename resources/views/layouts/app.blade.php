@@ -128,6 +128,12 @@
 
                         <li class="list-group-item" >
                             <a href="{{route('posts.trashed')}}">All Trashed Posts</a>
+
+                        </li><li class="list-group-item" >
+                            <a href="{{route('users')}}">Users</a>
+                        </li>
+                        <li class="list-group-item" >
+                            <a href="{{route('user.create')}}">New Users</a>
                         </li>
                     </ul>
                 </div>

@@ -69,6 +69,12 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function (){
 
     Route::post('/tag/store', 'TagsController@store')->name('tag.store');
 
+    //USERS
+    Route::get('/users', 'UsersController@index')->name('users');
+
+    Route::get('/users/create', 'UsersController@create')->name('user.create');
+
+    Route::post('/users/store', 'UsersController@store')->name('user.store');
 
 });
 
