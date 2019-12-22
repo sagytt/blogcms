@@ -31,10 +31,6 @@ namespace Illuminate\Support\Facades;
  */
 class Session extends Facade
 {
-    public static function flash(string $string, string $string1)
-    {
-    }
-
     /**
      * Get the registered name of the component.
      *

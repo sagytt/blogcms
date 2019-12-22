@@ -29,6 +29,8 @@
     <link rel="stylesheet" href="{{asset('css/toastr.min.css')}}">
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @notifyCss
+    @yield('styles')
 </head>
 <body>
     <div id="app">
@@ -129,12 +131,24 @@
                         <li class="list-group-item" >
                             <a href="{{route('posts.trashed')}}">All Trashed Posts</a>
 
+                        @if(Auth::user()->admin)
                         </li><li class="list-group-item" >
-                            <a href="{{route('users')}}">Users</a>
+                            <a href="{{route('users')}}">All Users</a>
                         </li>
                         <li class="list-group-item" >
-                            <a href="{{route('user.create')}}">New Users</a>
+                            <a href="{{route('user.create')}}">Add New User</a>
                         </li>
+
+                        <li class="list-group-item">
+                            <a href="{{route('user.profile')}}">My Profile</a>
+                        </li>
+                        @endif
+
+                        @if(Auth::user()->admin)
+                            <li class="list-group-item">
+                                <a href="{{ route('settings') }}">Settings</a>
+                            </li>
+                        @endif
                     </ul>
                 </div>
                 @endif
@@ -147,6 +161,6 @@
 
         </main>
     </div>
-
+@yield('scripts')
 </body>
 </html>

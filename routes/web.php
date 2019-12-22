@@ -12,13 +12,9 @@
 */
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'FrontEndController@index')->name('index');
 
 Auth::routes();
-
-
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function (){
 
@@ -75,6 +71,22 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function (){
     Route::get('/users/create', 'UsersController@create')->name('user.create');
 
     Route::post('/users/store', 'UsersController@store')->name('user.store');
+
+    Route::get('/user/admin/{id}', 'UsersController@admin')->name('user.admin')->middleware('admin');
+
+    Route::get('/user/not-admin/{id}', 'UsersController@not_admin')->name('user.not.admin');
+
+    //Profiles
+    Route::get('/user/profile', 'ProfilesController@index')->name('user.profile');
+
+    Route::post('/user/profile/update', 'ProfilesController@update')->name('user.profile.update');
+
+    Route::get('user/delete/{id}', 'UsersController@destroy')->name('user.delete');
+
+    //Site Settings
+    Route::get('/settings', 'SettingsController@index')->name('settings');
+
+    Route::post('/settings/update', 'SettingsController@update')->name('settings.update');
 
 });
 

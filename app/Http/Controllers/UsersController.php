@@ -13,6 +13,13 @@ class UsersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware('admin');
+        ///will use if we want to remove all the functions in the UserController from users which are not admin's.
+    }
+
     public function index()
     {
         //
@@ -52,7 +59,7 @@ class UsersController extends Controller
 
         $profile = Profile::create([
             'user_id' => $user->id,
-            'avatar' => ''
+            'avatar' => 'uploads/avatars/1.jpg'
         ]);
 
         session()->flash('success', 'User Added Permanently.');
@@ -103,5 +110,41 @@ class UsersController extends Controller
     public function destroy($id)
     {
         //
+
+        $user = User::find($id);
+
+        $user->profile->delete();
+        $user->delete();
+
+        session()->flash('success', 'User Deleted Permenantly!');
+
+        return redirect()->back();
+
+    }
+
+    public function admin($id)
+    {
+        $user = User::find($id);
+
+        $user->admin = 1;
+
+        $user->save();
+
+        session()->flash('success', 'Successfully changed user permission.');
+
+        return redirect()->back();
+    }
+
+    public function not_admin($id)
+    {
+        $user = User::find($id);
+
+        $user->admin = 0;
+
+        $user->save();
+
+        session()->flash('success', 'Successfully changed user permission.');
+
+        return redirect()->back();
     }
 }

@@ -4,7 +4,7 @@
 
     <div class="card">
         <div class="panel-heading">
-            Published Posts
+            All Users
         </div>
         <div class="card-body">
             <table class="table table-hover">
@@ -36,11 +36,20 @@
                             </td>
 
                             <td>
-                                Permissions
+                                @if($user->admin)
+                                    <a href="{{ route('user.not.admin', ['id' => $user->id]) }}" class="btn btn-xs btn-success">Remove Permissions</a>
+                                Admin
+                                @else
+                                    <a href="{{ route('user.admin', ['id' => $user->id]) }}" class="btn btn-xs btn-success">Make Admin</a>
+                                User
+                                @endif
                             </td>
 
                             <td>
-                                Delete
+                                @if(Auth::id() !== $user->id)
+
+                                    <a href="{{ route('user.delete', ['id' => $user->id]) }}" class="btn btn-xs btn-danger">Delete</a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
