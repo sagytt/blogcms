@@ -178,12 +178,12 @@
                         <div class="row">
                             <div class="case-item-wrap">
                                 @foreach($career->posts()->orderBy('created_at', 'desc')->take(3)->get() as $post)
-                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" >
-                                    <div class="case-item">
-                                        <div class="case-item__thumb">
-                                            <img src="{{ $post->featured }}" alt="our case">
-                                        </div>
-                                        <h6 class="case-item__title text-center" ><a href="#">{{ $post->title }}</a></h6>
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" >
+                                        <div class="case-item">
+                                            <div class="case-item__thumb">
+                                                <img src="{{ $post->featured }}" alt="our case">
+                                            </div>
+                                            <h6 class="case-item__title text-center" ><a href="#">{{ $post->title }}</a></h6>
                                         </div>
                                     </div>
                                 @endforeach
