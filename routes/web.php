@@ -11,6 +11,10 @@
 |
 */
 
+use App\Category;
+use App\Post;
+use App\Setting;
+
 Route::get('/', 'FrontEndController@index')->name('index');
 
 Auth::routes();
@@ -34,6 +38,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function (){
     Route::get('/category/edit/{id}', 'CategoriesController@edit')->name('category.edit');
     Route::get('/category/delete/{id}', 'CategoriesController@destroy')->name('category.delete');
     Route::post('/category/update/{id}', 'CategoriesController@update')->name('category.update');
+
+    Route::get('/category/{id}', 'FrontEndController@category')->name('category.single');
     // TAGS
     Route::get('/tag', 'TagsController@index')->name('tags');
     Route::get('/tag/edit/{id}', 'TagsController@edit')->name('tag.edit');
@@ -41,6 +47,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function (){
     Route::get('/tag/delete/{id}', 'TagsController@destroy')->name('tag.delete');
     Route::get('/tag/create', 'TagsController@create')->name('tag.create');
     Route::post('/tag/store', 'TagsController@store')->name('tag.store');
+
+    Route::get('/tag/{id}', 'FrontEndController@tag')->name('tag.single');
     //USERS
     Route::get('/users', 'UsersController@index')->name('users');
     Route::get('/users/create', 'UsersController@create')->name('user.create');
@@ -54,7 +62,21 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function (){
     //Site Settings
     Route::get('/settings', 'SettingsController@index')->name('settings');
     Route::post('/settings/update', 'SettingsController@update')->name('settings.update');
+
+    Route::get('/post/{slug}', 'FrontEndController@singlePost')->name('post.single');
+
 });
 
+
+////-----Search Part-----////
+Route::get('/results', function () {
+    $posts = Post::where('title', 'like', '%'. request('query') . '%')->get(); //for seaching with wildcard %
+    return view('results')
+        ->with('posts', $posts)
+        ->with('title', 'Search results :' . request('query'))
+        ->with('settings', Setting::first())
+        ->with('categories', Category::take(5)->get())
+        ->with('query', request('query'));
+});
 
 

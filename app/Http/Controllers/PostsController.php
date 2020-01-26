@@ -5,6 +5,7 @@ use App\Post;
 use App\Category;
 use App\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use MongoDB\Driver\Session;
 class PostsController extends Controller
 {
@@ -32,7 +33,9 @@ class PostsController extends Controller
             session()->flash('info', 'You must have some Categories Or Tags before attempting to create a post');
             return redirect()->back();
         }
-        return view('admin.posts.create')->with('categories', $categories)->with('tags', $tags);
+        return view('admin.posts.create')
+            ->with('categories', $categories)
+            ->with('tags', $tags);
     }
 
     /**
@@ -61,6 +64,7 @@ class PostsController extends Controller
             'category_id' => $request->category_id,
             'slug' => str_slug($request->title),
             'tags' => 'required',
+            'user_id' => Auth::id(),
         ]);
         //Session::flash('success', 'post created successfully');
         $post->tags()->attach($request->tags);
@@ -113,7 +117,7 @@ class PostsController extends Controller
         if($request->hasFile('featured'))
         {
             $featured = $request->featured;
-            $featured_new_name = time() . $featured->getClientOriginalName(); // time() is for giving the name of the file uniqe name with time
+            $featured_new_name = time() . $featured->getClientOriginalName(); // time() is to give a unique name to the file with timestamp
             $featured->move('uploads/posts', $featured_new_name);
             $post->featured = 'uploads/posts/' . $featured_new_name;
         }
