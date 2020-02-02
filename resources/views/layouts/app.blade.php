@@ -12,10 +12,10 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{asset('js/toastr.min.js')}}"></script>
-    <script>
+     <script>
 
         @if(Session::has('success'))
-        toastr.success("{{Session::get('success')}}"
+        toastr.success("{{Session::get('success')}}");
         @endif
 
         @if(Session::has('info'))
@@ -34,7 +34,6 @@
 </head>
 <body>
     <div id="app">
-
             @if(Session::has('success'))
                 <div class="alert alert-success" role="alert">
                     {{Session::get('success')}}
@@ -103,7 +102,7 @@
                 <div class="col-lg-4">
                     <ul class="list-group">
                         <li class="list-group-item">
-                            <a href="{{route('home')}}">Home</a>
+                            <a href="{{route('dashboard')}}">Home</a>
                         </li>
 
                         <li class="list-group-item">
@@ -158,7 +157,6 @@
             </div>
         </div>
         <main class="py-4">
-
         </main>
     </div>
 @yield('scripts')
