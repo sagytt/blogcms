@@ -43,6 +43,11 @@
                     @endif
                 </tbody>
             </table>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    {{$posts->links('vendor.pagination.bootstrap-4')}}
+                </ul>
+            </nav>
         </div>
     </div>
 @stop
