@@ -23,10 +23,12 @@
                         <a href="{{route('category.single', ['id' =>$category->id])}}">{{$category->name}}</a>
                     </li>
                     @endforeach
+                    @if(Auth::check())
                     @if(Auth::user()->admin)
                     <li>
                         <a href="{{route('dashboard')}}">Admin</a>
                     </li>
+                    @endif
                     @endif
                     <!-- Authentication Links -->
                     @guest
@@ -54,6 +56,7 @@
                         </li>
                     @endguest
                 </ul>
+
             </nav>
             <ul>
                 <li class="search search_main" style="color: black; margin-top: 5px;list-style-type: none;">
