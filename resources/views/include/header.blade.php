@@ -23,10 +23,40 @@
                         <a href="{{route('category.single', ['id' =>$category->id])}}">{{$category->name}}</a>
                     </li>
                     @endforeach
+                    @if(Auth::user()->admin)
+                    <li>
+                        <a href="{{route('dashboard')}}">Admin</a>
+                    </li>
+                    @endif
+                    <!-- Authentication Links -->
+                    @guest
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                        </li>
+                        @if (Route::has('register'))
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                            </li>
+                        @endif
+                    @else
+                        <li>
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                 <span class="caret">{{ Auth::user()->name }}</span>
+                            </a>
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                   onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                    {{ __('Logout') }}
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                        </li>
+                    @endguest
                 </ul>
             </nav>
-            <ul class="nav-add">
-                <li class="search search_main" style="color: black; margin-top: 5px;">
+            <ul>
+                <li class="search search_main" style="color: black; margin-top: 5px;list-style-type: none;">
                     <a href="#" class="js-open-search">
                         <i class="seoicon-loupe"></i>
                     </a>
