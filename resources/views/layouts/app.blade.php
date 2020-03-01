@@ -58,7 +58,7 @@
         </nav>
 
         <div class="container">
-            <div class="row">
+            <div class="row pt-3">
                 @if(Auth::check()){{--        check if user if logged in or not        --}}
                 <div class="col-lg-4">
                     <ul class="list-group">
